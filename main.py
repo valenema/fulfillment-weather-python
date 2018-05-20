@@ -34,6 +34,7 @@ log = app.logger
 
 @app.route('/', methods=['POST'])
 def webhook():
+    return "test task"
     """This method handles the http requests for the Dialogflow webhook
 
     This is meant to be used in conjunction with the weather Dialogflow agent
