@@ -38,7 +38,7 @@ owm = pyowm.OWM(owmapikey)
 
 #geting and sending response to dialogflow
 @app.route('/webhook', methods=['POST'])
-def webhook():
+def webhook_pyowm():
     req = request.get_json(silent=True, force=True)
 
     print("Request:")
