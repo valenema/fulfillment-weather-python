@@ -23,6 +23,7 @@ Get a WWO API key here: https://developer.worldweatheronline.com/api/
 """
 
 import json
+import os
 
 from flask import Flask, request, make_response, jsonify
 
@@ -223,4 +224,5 @@ def weather_temperature(req):
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+    port = int(os.getenv('PORT', 5000))
+    app.run(debug=True, port=port, host='0.0.0.0')
