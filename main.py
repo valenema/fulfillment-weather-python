@@ -33,10 +33,10 @@ from forecast import Forecast, validate_params
 app = Flask(__name__)
 log = app.logger
 
-owmapikey=os.environ.get('OWMApiKey','') #or provide your key here
-if owmapikey == '':
+owmapikey=os.environ.get('OWMApiKey') #or provide your key here
+if owmapikey == None:
     owmapikey=open('owmapikey.txt').read()
-    print('owmapikey', owmapikey)
+print('owmapikey', owmapikey)
 owm = pyowm.OWM(owmapikey)
 
 #geting and sending response to dialogflow
@@ -49,8 +49,6 @@ def webhook_pyowm():
     
     res = processRequest(req)
 
-    res = json.dumps(res, indent=4)
-    print(res)
     r = make_response(res)
     r.headers['Content-Type'] = 'application/json'
     return r
@@ -81,11 +79,14 @@ def processRequest(req):
     temp_max_fahrenheit=str(fahrenheit_result.get('temp_max'))
     speech = "Today the weather in " + city + ": \n" + "Temperature in Celsius:\nMax temp :"+temp_max_celsius+".\nMin Temp :"+temp_min_celsius+".\nTemperature in Fahrenheit:\nMax temp :"+temp_max_fahrenheit+".\nMin Temp :"+temp_min_fahrenheit+".\nHumidity :"+humidity+".\nWind Speed :"+wind_speed+"\nLatitude :"+lat+".\n  Longitude :"+lon
     
-    return {
+    print(speech)
+    return jsonify({'fulfillmentText': speech})
+
+    """return {
         "speech": speech,
         "displayText": speech,
         "source": "dialogflow-weather-by-satheshrgs"
-        }
+        }"""
 
 @app.route('/', methods=['POST'])
 def webhook():
