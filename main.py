@@ -33,7 +33,10 @@ from forecast import Forecast, validate_params
 app = Flask(__name__)
 log = app.logger
 
-owmapikey=os.environ.get('OWMApiKey') #or provide your key here
+owmapikey=os.environ.get('OWMApiKey','') #or provide your key here
+if owmapikey == '':
+    owmapikey=open('owmapikey.txt').read()
+    print('owmapikey', owmapikey)
 owm = pyowm.OWM(owmapikey)
 
 #geting and sending response to dialogflow
@@ -55,7 +58,7 @@ def webhook_pyowm():
 #processing the request from dialogflow
 def processRequest(req):
     
-    result = req.get("result")
+    result = req.get("queryResult")
     parameters = result.get("parameters")
     city = parameters.get('address').get('city')
     observation = owm.weather_at_place(city)
